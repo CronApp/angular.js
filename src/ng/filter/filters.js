@@ -348,6 +348,21 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
       formattedText += 'e+' + exponent;
     }
   }
+    /*
+     * CVE-2022-25844
+    */
+    const maxLength = 100;
+
+    if (pattern.posPre && pattern.posPre.length > maxLength) {
+      pattern.posPre = pattern.posPre.substring(0, maxLength);
+      console.warn('Value of posPre is too long, it has been truncated to the maximum allowed length.');
+    }
+
+    if (pattern.posSuf && pattern.posSuf.length > maxLength) {
+      pattern.posSuf = pattern.posSuf.substring(0, maxLength);
+      console.warn('Value of posSuf is too long, it has been truncated to the maximum allowed length.');
+    }
+
   if (number < 0 && !isZero) {
     return pattern.negPre + formattedText + pattern.negSuf;
   } else {
